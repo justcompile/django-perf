@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h1 class="page-header">{{ store.name }}</h1>
+
+  <div class="row placeholders">
+    {% for category in categories %}
+    <div class="col-xs-6 col-sm-3 placeholder">
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+      <h4><a href="{% url 'store' store.id %}?category={{ category.name }}">{{ category.name }}</a></h4>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 class="sub-header">Products ({{ filtered_category|default:"all"}})</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Lead Image</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Categories</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td>{{ product.id }}</td>
+            <td><img src="{{ product.images.all.0.url }}" /></td>
+            <td>{{ product.name }}</td>
+            <td>£{{ product.price }}</td>
+            <td>
+                {% for cat in product.categories.all %}
+                  {{cat.name}},
+                {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
